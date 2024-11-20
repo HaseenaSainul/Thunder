@@ -500,8 +500,11 @@ namespace PluginHost {
             }
             else {
                 // We have a StateControl interface, so at least start resuming, if not already resumed :-)
-                if (stateControl->State() == PluginHost::IStateControl::SUSPENDED) {
-                    result = stateControl->Request(PluginHost::IStateControl::RESUME);
+                PluginHost::IStateControl::state state = PluginHost::IStateControl::UNINITIALIZED;
+                if (stateControl->State(state) == Core::ERROR_NONE) {
+                    if (state == PluginHost::IStateControl::SUSPENDED) {
+                        result = stateControl->Request(PluginHost::IStateControl::RESUME);
+                    }
                 }
                 stateControl->Release();
             }
@@ -644,8 +647,11 @@ namespace PluginHost {
                 }
                 else {
                     // We have a StateControl interface, so at least start suspending, if not already suspended :-)
-                    if (stateControl->State() == PluginHost::IStateControl::RESUMED) {
-                        result = stateControl->Request(PluginHost::IStateControl::SUSPEND);
+                    PluginHost::IStateControl::state state = PluginHost::IStateControl::UNINITIALIZED;
+                    if (stateControl->State(state) == Core::ERROR_NONE) {
+                        if (state == PluginHost::IStateControl::RESUMED) {
+                            result = stateControl->Request(PluginHost::IStateControl::SUSPEND);
+                        }
                     }
                     stateControl->Release();
                 }

@@ -49,7 +49,10 @@ namespace PluginHost
             PluginHost::IStateControl* mode = const_cast<PluginHost::IShell*>(RHS)->QueryInterface<PluginHost::IStateControl>();
 
             if (mode != nullptr) {
-                Core::JSON::EnumType<state>::operator=(mode->State() == PluginHost::IStateControl::RESUMED ? state::RESUMED : state::SUSPENDED);
+                PluginHost::IStateControl::state result = PluginHost::IStateControl::UNINITIALIZED;
+                if (mode->State(result) == Core::ERROR_NONE) {
+                    Core::JSON::EnumType<state>::operator=(result == PluginHost::IStateControl::RESUMED ? state::RESUMED : state::SUSPENDED);
+                }
                 mode->Release();
             }
         }

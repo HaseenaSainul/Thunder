@@ -26,7 +26,7 @@
 
 namespace Thunder {
 namespace PluginHost {
-
+    // @json 1.0.0
     // This interface gives direct access to change occuring on the remote object
     struct EXTERNAL IStateControl : virtual public Core::IUnknown {
 
@@ -46,23 +46,38 @@ namespace PluginHost {
             EXITED = 0x0003
         };
 
+        // @event
         struct INotification : virtual public Core::IUnknown {
             enum {
                 ID = RPC::ID_STATECONTROL_NOTIFICATION
             };
 
+            // @brief Signals a state change of the Browser
+            // @param Changed state
             virtual void StateChange(const IStateControl::state state) = 0;
         };
+        virtual void Register(IStateControl::INotification* notification) = 0;
+        virtual void Unregister(IStateControl::INotification* notification) = 0;
 
         static const TCHAR* ToString(const state value);
         static const TCHAR* ToString(const command value);
 
+        // @json:omit
         virtual Core::hresult Configure(PluginHost::IShell* framework) = 0;
-        virtual state State() const = 0;
+        // @json:omit
         virtual Core::hresult Request(const command state) = 0;
+        // @json:omit
+        DEPRECATED virtual state State() const
+        {
+            state result;
+            return ((State(result) == Core::ERROR_NONE) ? result : EXITED);
+        }
 
-        virtual void Register(IStateControl::INotification* notification) = 0;
-        virtual void Unregister(IStateControl::INotification* notification) = 0;
+        // @property
+        // @brief State: Get/Set running state of the service/plugin
+        // @param state: State of the service/plugin
+        virtual Core::hresult State(state& value /* @out */) const = 0;
+        virtual Core::hresult State(const state value) = 0;
     };
 
 } // namespace PluginHost

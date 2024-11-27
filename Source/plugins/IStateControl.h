@@ -26,7 +26,7 @@
 
 namespace Thunder {
 namespace PluginHost {
-    // @json 1.0.0
+    // @json 1.0.0 @uncompliant:collapsed
     // This interface gives direct access to change occuring on the remote object
     struct EXTERNAL IStateControl : virtual public Core::IUnknown {
 

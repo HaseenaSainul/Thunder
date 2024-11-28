@@ -41,7 +41,7 @@ option(LEGACY_CONFIG_GENERATOR
     "Use the legacy config generator and all its needed CMake sub-components. 
      If switched OFF, plugins need to use the new python-based templates. (*.conf.in)" OFF)
 option(ENABLE_LEGACY_INTERFACE_SUPPORT
-    " use the legacy interfaces to generate json based interfaces" ON)
+    " use the legacy interfaces to generate json based interfaces" OFF)
 option(HUMAN_VERSIONED_BINARIES
     "Create binaries with a human readeable version suffix" ON)
 option(VERSIONED_LIBRARY_LOADING
